@@ -41,7 +41,9 @@ export async function getSortedPostsList(): Promise<PostForList[]> {
 	// delete post.body
 	const sortedPostsList = sortedFullPosts.map((post) => ({
 		slug: post.slug,
-		data: post.data,
+		data:{ ...post.data,
+				category: post.data.category === null ? undefined : post.data.category,
+		},
 	}));
 
 	return sortedPostsList;
