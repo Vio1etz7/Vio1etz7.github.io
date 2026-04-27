@@ -41,12 +41,13 @@ export async function getSortedPostsList(): Promise<PostForList[]> {
 	// delete post.body
 	const sortedPostsList = sortedFullPosts.map((post) => ({
 		slug: post.slug,
-		data:{ ...post.data,
-				category: post.data.category === null ? undefined : post.data.category,
+		data: {
+			...post.data,
+			category: post.data.category === null ? undefined : post.data.category,
 		},
 	}));
 
-	return sortedPostsList;
+	return sortedPostsList as unknown as PostForList[];
 }
 export type Tag = {
 	name: string;
