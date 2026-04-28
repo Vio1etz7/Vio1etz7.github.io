@@ -41,7 +41,7 @@ draft: false
 在项目中找到`src/config.ts`，根据作者的配置来自定义项目。
 
 ### 4.在GitHub建仓
-可以参看我上一篇博客https://vio1etz7.github.io/posts/2026-4-28-1-第一篇博客/我的第一篇博客.md 的建仓方法
+可以参看我[上一篇文章](https://vio1etz7.github.io/posts/2026-4-28-1-first-blog/my-first-blog/)的建仓方法
 
 ### 5.修改本地代码“连接指向”
 因为你拉取到本地的项目还连着原作者的仓库，这里需要修改本地项目的指向。
@@ -151,7 +151,7 @@ export async function getSortedPostsList(): Promise<PostForList[]> {
 ### 9.有关文章的创建
 可以在终端执行`pnpm new-post <filename>`来创建文章
 也可以直接在`src/content/posts`目录下创建".md"文件，或者创建一个文件夹，把文章相关的资料都放在里面建议命名规范为`year-month-date-number-<filename>`以便于管理
-![alt text](image.png)
+![alt](image.png)
 
 ### 遇到的坑
 
