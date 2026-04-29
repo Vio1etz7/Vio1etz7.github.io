@@ -4,6 +4,7 @@ import type {
 	NavBarConfig,
 	ProfileConfig,
 	SiteConfig,
+	CommentConfig
 } from "./types/config";
 import { LinkPreset } from "./types/config";
 
@@ -88,3 +89,21 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 	// Please select a dark theme, as this blog theme currently only supports dark background color
 	theme: "github-dark",
 };
+
+export const commentConfig: CommentConfig = {
+	enable: true,
+	repo: "Vio1etz7/Vio1etz7.github.io",
+	repoId:"R_kgDOSNdkeg",
+	category: "Announcements",
+    categoryId: "DIC_kwDOSNdkes4C78c2",
+	mapping: "pathname",
+    strict: "0",
+    reactionsEnabled: "1",
+    emitMetadata: "0",
+    inputPosition: "top",
+    theme: "preferred_color_scheme",
+    lang: "zh-CN",
+    loading: "lazy",
+
+}
+
