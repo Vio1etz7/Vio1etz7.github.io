@@ -163,4 +163,249 @@ var d = { name: 'sunwukong', age: 18 };
 对应的内存结构示意图：
 ![alt text](image-2.png)
 
+📅 **记录时间：2026-05-27**
+### 2.5 函数
+#### 2.5.1 函数声明 
+函数声明方法：
+- 函数对象（几乎不用）
+```js wrap
+var 函数名 = new Function（"执行语句"）  
+
+//eg
+var fun = new Function("console.log('hello world!');")
+```
+- 函数声明（常用）
+```js wrap 
+function 函数名(参数列表) {}
+
+//eg
+function fun(){
+    console.log("hello world!");
+}
+
+```
+
+- 函数表达式（常用）
+```js wrap 
+var 函数名 = function(参数列表) {  }
+
+//eg
+var fun = function(){
+    console.log("hello world!");
+}
+```
+#### 2.5.2函数参数
+- 调用函数时，解析器不会检查实参的类型，所以要注意，是否有可能会接收到非法的参数，如果有可能，则需要对参数进行类型的检查，函数的实参可以是任意的数据类型
+- 调用函数时，解析器也不会检查实参的数量，多余实参不会被赋值，如果实参的数量少于形参的数量，则没有对应实参的形参将是undefined
+
+
+#### 2.5.3 立即执行函数
+立即执行函数：函数定义完，立即被调用，这种函数叫做立即执行函数，立即执行函数往往只会执行一次。
+eg：
+```js wrap
+(function (){
+    console.log("我是立即执行函数");
+
+})();
+```
+
+#### 2.5.4 this对象
+解析器在调用函数每次都会向函数内部传递进一个隐含的参数，这个隐含的参数就是this，this指向的是一个对象，这个对象我们称为函数执行的上下文对象，根据函数的调用方式的不同，this会指向不同的对象
+
+以函数的形式调用时，**this永远都是window**
+以方法的形式调用时，**this就是调用方法的那个对象**
+eg:
+```js wrap
+var name = "全局变量name";
+
+function fun(){
+    console.log(this.name);
+}
+
+var obj = {
+    name: "zhangsan";
+    sayName: fun;
+}
+
+//我们希望调用boj.sayName()输出的是obj.name，而不是全局变量name
+obj.sayName();
+
+```
+### 2.6 用构造函数对象
+构造函数（可以类比C++）：
+构造函数：构造函数就是一个普通的函数，创建方式和普通函数没有区别，不同的是构造函数习惯上首字母大写，构造函数和普通函数的还有一个区别就是调用方式的不同，普通函数是直接调用，而构造函数需要使用new关键字来调用。
+```js wrap
+// 使用构造函数来创建对象
+function Person(name, age) {
+    // 设置对象的属性
+    this.name = name;
+    this.age = age;
+    // 设置对象的方法
+    this.sayName = function () {
+        console.log(this.name);
+    };
+}
+
+var person1 = new Person("孙悟空", 18);
+var person2 = new Person("猪八戒", 19);
+var person3 = new Person("沙和尚", 20);
+
+console.log(person1);
+console.log(person2);
+console.log(person3);
+
+```
+
+那构造函数是怎么执行创建对象的过程呢？我再来解释一下：
+
+1.调用构造函数，它会立刻创建一个新的对象
+2.将新建的对象设置为函数中this，在构造函数中可以使用this来引用新建的对象
+3.逐行执行函数中的代码
+4.将新建的对象作为返回值返回
+
+利用构造函数创建的对象称为一类对象，也将一个构造函数称为一个类。我们将通过一个构造函数创建的对象，称为是该类的实例。
+现在，this又出现了一种新的情况，为了不混淆，再来梳理一下：
+
+当以函数的形式调用时，this是window
+当以方法的形式调用时，谁调用方法this就是谁
+当以构造函数的形式调用时，this就是新创建的那个对象
+
+我们可以用```instanceof```运算符检测一个对象是否是一个类的实例，它返回```true```或者```false```
+eg:
+```javascript
+对象 instanceof 构造函数
+```
+### 2.7 原型
+抽出对象中的方法作为全局函数不太好，因为会污染作用域，有没有一种方法，我只在Person这个类的全局对象中添加一个函数，然后在类中引用？答案肯定是有的，这就需要原型对象了，我们先看看怎么做的，然后在详细讲解原型对象。
+```js wrap
+// 使用构造函数来创建对象
+function Person(name, age) {
+    // 设置对象的属性
+    this.name = name;
+    this.age = age;
+}
+
+// 在Person类的原型对象中添加方法
+Person.prototype.sayName = function() {
+    console.log(this.name);
+};
+
+var person1 = new Person("孙悟空", 18);
+var person2 = new Person("猪八戒", 19);
+var person3 = new Person("沙和尚", 20);
+
+person1.sayName();
+person2.sayName();
+person3.sayName();
+```
+原型（prototype）到底是什么呢？
+
+我们所创建的每一个函数，解析器都会向函数中添加一个属性**prototype**，这个属性对应着一个对象，这个对象就是我们所谓的原型对象，即显式原型，原型对象就相当于一个公共的区域，所有同一个类的实例都可以访问到这个原型对象，我们可以将对象中共有的内容，统一设置到原型对象中。
+
+如果函数作为普通函数调用prototype没有任何作用，当函数以构造函数的形式调用时，它所创建的对象中都会有一个隐含的属性，指向该构造函数的原型对象，我们可以通过__proto__（隐式原型）来访问该属性。当我们访问对象的一个属性或方法时，它会先在对象自身中寻找，如果有则直接使用，如果没有则会去原型对象中寻找，如果找到则直接使用。
+
+以后我们创建构造函数时，可以将这些对象共有的属性和方法，统一添加到构造函数的原型对象中，这样不用分别为每一个对象添加，也不会影响到全局作用域，就可以使每个对象都具有这些属性和方法了
+
+
+### 2.8 原型链
+访问一个对象的属性时，先在自身属性中查找，找到返回， 如果没有，再沿着__proto__这条链向上查找，找到返回，如果最终没找到，返回undefined，这就是原型链，又称隐式原型链，它的作用就是查找对象的属性(方法)。
+
+我们使用一张图来梳理一下上一节原型案例的代码：
+![原型链](image-3.png)
+
+> 注意：Object对象是所有对象的祖宗，Object的原型对象指向为null，也就是没有原型对象
+
+### 2.9 hasOwnProperty方法
+hasOwnProperty方法，用于判断对象自身属性中是否有该属性。
+eg:
+```js wrap
+function Myclass(){}
+
+Myclass.prototype.name = '我是原型中的名字';
+
+var myclass = new Myclass();
+myclass.age = 18;
+
+//用in 关键字判断对象自身属性中是否有该属性
+console.log('name' in myclass);
+console.log('age' in myclass);
+//输出结果都为true,因为name属性是继承的
+
+console.log(myclass.hasOwnProperty('name'));
+console.log(myclass.hasOwnProperty('age'))
+//输出结果为false,true,因为name属性是继承的
+```
+>注: hasOwnProperty()方法是Object中的方法.
+
+### 2.9 对象继承
+
+前边我们一直在说继承，那什么是继承？它有什么作用？如何实现继承？将会是本章节探讨的问题。
+
+面向对象的语言有一个标志，那就是它们都有类的概念，而通过类可以创建任意多个具有相同属性和方法的对象。但是在**JavaScript中没有类的概念**，前边我们说所的类只是我们自己这么叫，大家要清楚。因此它的对象也与基于类的对象有所不同。实际上，JavaScript语言是通过一种叫做原型（prototype）的方式来实现面向对象编程的。
+
+那实现继承有一个最大的好处就是子对象可以使用父对象的属性和方法，从而简化了一些代码。
+
+JavaScript有六种非常经典的对象继承方式，但是我们只学习前三种：
+
+- **原型链继承**
+- **借用构造函数继承**
+- **组合继承（重要）**
+- 原型式继承
+- 寄生式继承
+- 寄生组合式继承
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
 持续更新中... ☕
