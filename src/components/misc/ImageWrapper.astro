@@ -29,9 +29,15 @@ const isPublic = src.startsWith("/");
 // biome-ignore lint/suspicious/noImplicitAnyLet: <check later>
 let img;
 if (isLocal) {
-	const files = import.meta.glob<ImageMetadata>("../../**", {
-		import: "default",
-	});
+	// 只收集图片，别把 src 下的 .css/.md/.ts 也 glob 进来：
+	// 之前用 "../../**" 会把所有样式文件拖进构建图，
+	// 导致 markdown.css 里 `@apply link` 在独立编译时找不到 main.css 定义的 .link 而构建失败。
+	const files = import.meta.glob<ImageMetadata>(
+		"../../**/*.{png,jpg,jpeg,webp,avif,gif,svg}",
+		{
+			import: "default",
+		},
+	);
 	let normalizedPath = path
 		.normalize(path.join("../../", basePath, src))
 		.replace(/\\/g, "/");

@@ -3,8 +3,10 @@ import { defineCollection, z } from "astro:content";
 const postsCollection = defineCollection({
 	schema: z.object({
 		title: z.string(),
-		published: z.date(),
-		updated: z.date().optional(),
+		// coerce：允许 `2026-11-6` 这种没补零的写法（YAML 会当成字符串），
+		// 避免一处日期格式写错就让整个构建失败、部署中断。
+		published: z.coerce.date(),
+		updated: z.coerce.date().optional(),
 		draft: z.boolean().optional().default(false),
 		description: z.string().optional().default(""),
 		image: z.string().optional().default(""),

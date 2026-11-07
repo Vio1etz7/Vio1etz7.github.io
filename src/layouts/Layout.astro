@@ -20,6 +20,13 @@ import type { Favicon } from "../types/config";
 import { pathsEqual, url } from "../utils/url-utils";
 import "katex/dist/katex.css";
 
+// 全局样式：显式引入，顺序固定。
+// 之前这些 CSS 是靠 ImageWrapper 里的 import.meta.glob("../../**") 顺带拖进构建的，
+// 属于隐式依赖——一旦那个 glob 收窄（或文件顺序变化），整站样式就会丢、构建就会报
+// `@apply link` 找不到类。这里改成显式声明，构建结果与文件系统枚举顺序无关。
+import "../styles/variables.styl";
+import "../styles/markdown-extend.styl";
+
 interface Props {
 	title?: string;
 	banner?: string;
@@ -164,6 +171,13 @@ const bannerOffset =
 	'banner-height-home': `${BANNER_HEIGHT_HOME}vh`,
 	'banner-height': `${BANNER_HEIGHT}vh`,
 }}>
+@import "../styles/main.css";
+@import "../styles/markdown.css";
+@import "../styles/expressive-code.css";
+@import "../styles/scrollbar.css";
+@import "../styles/transition.css";
+@import "../styles/photoswipe.css";
+
 @tailwind components;
 @layer components {
 	.enable-banner.is-home #banner-wrapper {
