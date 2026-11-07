@@ -1,4 +1,9 @@
 .custom-md {
+    /* 中文正文改用衬线字体（自托管 Noto Serif SC），长文更耐读；
+       界面仍保持无衬线，形成"标题无衬线 + 正文衬线"的编辑感对比。 */
+    font-family: "Noto Serif SC Variable", "Source Han Serif SC", "Songti SC", "SimSun", serif;
+    letter-spacing: 0.01em;
+
     h1 {
         @apply text-3xl;
     }
