@@ -3,7 +3,7 @@ title: 我的第一篇博客
 published: 2026-04-21 
 description: 这是一篇搭建hexo博客环境的指南.
 image: 95869858_p0_master1200.jpg
-tags: [hexo,blog]
+tags: [Hexo, 博客]
 category: 博客历险记
 draft: false
 ---

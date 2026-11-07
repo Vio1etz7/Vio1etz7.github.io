@@ -3,7 +3,7 @@ title: Astro + Fuwari + Giscus 评论区的集成
 published: 2026-04-30
 description: "集成Giscus评论系统"
 image: "130909657_p0_master1200.jpg"
-tags: [astro,blog,Fuwari,Giscus]
+tags: [Astro, 博客, Fuwari, Giscus]
 category: 博客历险记
 draft: false
 ---

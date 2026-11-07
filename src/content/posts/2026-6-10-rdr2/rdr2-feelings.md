@@ -3,7 +3,7 @@ title: 荒野大镖客2-救赎
 published: 2026-06-10
 description: "通关荒野大镖客2后的一些感想"
 image: "65a8e45f5bd6ba083d1b25f07b4fecd0.jpeg"
-tags: [游戏, RDR2,RDR]
+tags: [游戏, RDR2]
 category: 游戏
 draft: false
 ---

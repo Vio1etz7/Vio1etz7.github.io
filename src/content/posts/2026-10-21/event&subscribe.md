@@ -3,8 +3,9 @@ title: 委托/事件和订阅的理解和应用
 published: 2026-10-21
 description: "关于委托，事件的一些理解和static的理解"
 image: "2026-10-21-cover.jpg"
-tags: [游戏, 开发, C#, unity, Event, Delegate, Subscribe, Unsubscribe]
+tags: [游戏, 游戏开发, Unity, C#, 委托, 事件]
 category: 游戏开发
+series: "Unity 游戏开发笔记"
 draft: false
 ---
 

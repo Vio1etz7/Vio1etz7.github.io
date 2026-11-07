@@ -3,8 +3,9 @@ title: Coroutine相关应用和理解
 published: 2026-09-30
 description: "有关coroutine的杂谈"
 image: "2026-9-30-cover.jpg"
-tags: [游戏, 开发, unity, coroutine]
+tags: [游戏, 游戏开发, Unity, 协程]
 category: 游戏开发
+series: "Unity 游戏开发笔记"
 draft: false
 ---
 

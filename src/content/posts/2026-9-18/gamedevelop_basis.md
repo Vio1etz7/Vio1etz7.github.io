@@ -3,8 +3,9 @@ title: 游戏开发基础
 published: 2026-09-18
 description: "游戏开发基础"
 image: "26-9-18_cover.jpg"
-tags: [游戏, 开发, unity]
+tags: [游戏, 游戏开发, Unity]
 category: 游戏开发
+series: "Unity 游戏开发笔记"
 draft: false
 ---
 

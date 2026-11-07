@@ -3,7 +3,7 @@ title: 从Hexo到Astro的博客转型记
 published: 2026-04-28 
 description: "记录从 Hexo 迁移到 Astro (Fuwari) 的过程以及过程中遇到的坑"
 image: "115116608_p0_master1200.jpg"
-tags: [hexo,astro,blog,GitHub Pages,Fuwari,CI/CD,GitHub Actions]
+tags: [Hexo, Astro, 博客, GitHub Pages, Fuwari, CI/CD, GitHub Actions]
 category: 博客历险记
 draft: false
 ---

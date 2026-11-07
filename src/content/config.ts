@@ -13,6 +13,8 @@ const postsCollection = defineCollection({
 		tags: z.array(z.string()).optional().default([]),
 		category: z.string().optional().nullable().default(""),
 		lang: z.string().optional().default(""),
+		// 系列名：同一系列的文章会在正文上方显示本系列目录
+		series: z.string().optional().default(""),
 
 		/* For internal use */
 		prevTitle: z.string().default(""),

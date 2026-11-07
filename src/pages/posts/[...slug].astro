@@ -28,6 +28,20 @@ const { Content, headings } = await entry.render();
 
 const { remarkPluginFrontmatter } = await entry.render();
 
+// 系列文章：同 series 的其它文章，按发布时间正序排列（早 → 晚）
+const seriesName = entry.data.series;
+const seriesPosts = seriesName
+	? (await getSortedPosts())
+			.filter(
+				(post) => post.data.series === seriesName && post.data.draft !== true,
+			)
+			.sort(
+				(a, b) =>
+					new Date(a.data.published).valueOf() -
+					new Date(b.data.published).valueOf(),
+			)
+	: [];
+
 const jsonLd = {
 	"@context": "https://schema.org",
 	"@type": "BlogPosting",
@@ -102,6 +116,28 @@ const jsonLd = {
                 <ImageWrapper id="post-cover" src={entry.data.image} basePath={path.join("content/posts/", getDir(entry.id))} class="mb-8 rounded-xl banner-container onload-animation"/>
             }
 
+
+            {seriesPosts.length > 1 &&
+                <div class="card-base px-5 py-4 mb-6">
+                    <div class="flex items-center gap-2 mb-3">
+                        <Icon name="material-symbols:library-books-outline-rounded" class="text-[var(--primary)] text-lg" />
+                        <span class="font-bold text-sm text-black/90 dark:text-white/90">系列：{seriesName}</span>
+                        <span class="text-xs text-black/40 dark:text-white/40">共 {seriesPosts.length} 篇</span>
+                    </div>
+                    <ol class="space-y-1.5">
+                        {seriesPosts.map((post, index) => (
+                            <li class="text-sm flex gap-2 leading-relaxed">
+                                <span class="text-black/35 dark:text-white/35 shrink-0 w-4 text-right">{index + 1}.</span>
+                                {post.slug === entry.slug ? (
+                                    <span class="font-bold text-[var(--primary)]">{post.data.title}（本篇）</span>
+                                ) : (
+                                    <a href={getPostUrlBySlug(post.slug)} class="link">{post.data.title}</a>
+                                )}
+                            </li>
+                        ))}
+                    </ol>
+                </div>
+            }
 
             <Markdown class="mb-6 markdown-content onload-animation">
                 <Content />
