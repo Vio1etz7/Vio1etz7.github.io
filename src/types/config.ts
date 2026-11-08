@@ -35,6 +35,16 @@ export type SiteConfig = {
 		depth: 1 | 2 | 3;
 	};
 
+	// 社交平台分享卡片（Open Graph）用的图。
+	// src 以 / 开头就当作 public 目录下的文件，也可以直接填外部完整 URL。
+	// 建议 1200×630（1.91:1），宽高要和实际图片一致，平台才会正确裁切。
+	ogImage: {
+		src: string;
+		width?: number;
+		height?: number;
+		alt?: string;
+	};
+
 	favicon: Favicon[];
 };
 

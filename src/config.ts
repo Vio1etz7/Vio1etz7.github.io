@@ -31,6 +31,13 @@ export const siteConfig: SiteConfig = {
 		enable: true, // Display the table of contents on the right side of the post
 		depth: 2, // Maximum heading depth to show in the table, from 1 to 3
 	},
+	ogImage: {
+		// 换了图记得同步改 width/height，否则平台会按错误的比例裁切
+		src: "/og-banner.jpg", // public 下的路径，或外部完整 URL
+		width: 1200,
+		height: 630,
+		alt: "Vio1etz7 - 一个软工学生的博客",
+	},
 	favicon: [
 		// Leave this array empty to use the default favicon
 		{

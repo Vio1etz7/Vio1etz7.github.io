@@ -64,6 +64,15 @@ if (title) {
 const favicons: Favicon[] =
 	siteConfig.favicon.length > 0 ? siteConfig.favicon : defaultFavicons;
 
+// 分享卡片图（Open Graph）。在 src/config.ts 的 ogImage 里换图即可，不用改这个文件。
+const ogImageSrc = siteConfig.ogImage?.src ?? "/og-cover.png";
+const ogImageWidth = siteConfig.ogImage?.width ?? 1200;
+const ogImageHeight = siteConfig.ogImage?.height ?? 630;
+const ogImageAlt =
+	siteConfig.ogImage?.alt ?? `${siteConfig.title} - ${siteConfig.subtitle}`;
+// 外部完整 URL 也能直接传给 new URL，此时 site 会被忽略
+const ogImageUrl = new URL(ogImageSrc, Astro.site).toString();
+
 // const siteLang = siteConfig.lang.replace('_', '-')
 if (!lang) {
 	lang = `${siteConfig.lang}`;
@@ -102,11 +111,11 @@ const bannerOffset =
         )}
 
 		<meta name="twitter:card" content="summary_large_image">
-		<meta property="og:image" content={new URL("/og-cover.png", Astro.site)}>
-		<meta property="og:image:width" content="1200">
-		<meta property="og:image:height" content="630">
-		<meta property="og:image:alt" content={`${siteConfig.title} - ${siteConfig.subtitle}`}>
-		<meta name="twitter:image" content={new URL("/og-cover.png", Astro.site)}>
+		<meta property="og:image" content={ogImageUrl}>
+		<meta property="og:image:width" content={String(ogImageWidth)}>
+		<meta property="og:image:height" content={String(ogImageHeight)}>
+		<meta property="og:image:alt" content={ogImageAlt}>
+		<meta name="twitter:image" content={ogImageUrl}>
 		<meta property="twitter:url" content={Astro.url}>
 		<meta name="twitter:title" content={pageTitle}>
 		<meta name="twitter:description" content={description || pageTitle}>
