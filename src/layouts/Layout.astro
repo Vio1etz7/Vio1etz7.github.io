@@ -593,3 +593,93 @@ if (window.swup) {
 	document.addEventListener("swup:enable", setup)
 }
 </script>
+
+<script>
+const MERMAID_CDN = "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+let mermaidPromise: Promise<any> | null = null;
+
+function getMermaid() {
+	if (!mermaidPromise) {
+		mermaidPromise = import(/* @vite-ignore */ MERMAID_CDN).then((mod) => mod.default);
+	}
+	return mermaidPromise;
+}
+
+function extractMermaidSource(pre: Element): string {
+	const codeLines = pre.querySelectorAll(".ec-line .code");
+	if (codeLines.length > 0) {
+		return Array.from(codeLines)
+			.map((line) => line.textContent ?? "")
+			.join("\n");
+	}
+	return pre.textContent ?? "";
+}
+
+async function renderMermaidDiagrams() {
+	const rawBlocks = document.querySelectorAll('pre[data-language="mermaid"], pre > code.language-mermaid');
+	const existingNodes = document.querySelectorAll(".mermaid[data-mermaid-source]");
+	if (rawBlocks.length === 0 && existingNodes.length === 0) return;
+
+	const mermaid = await getMermaid();
+	const isDark = document.documentElement.classList.contains("dark");
+	mermaid.initialize({
+		startOnLoad: false,
+		theme: isDark ? "dark" : "default",
+		securityLevel: "loose",
+	});
+
+	const nodesToRender: HTMLElement[] = [];
+
+	rawBlocks.forEach((el) => {
+		const pre = el.tagName === "PRE" ? el : el.parentElement;
+		if (!pre) return;
+		const source = extractMermaidSource(pre).trim();
+		if (!source) return;
+
+		const container = document.createElement("div");
+		container.className = "mermaid flex justify-center my-6 overflow-x-auto";
+		container.setAttribute("data-mermaid-source", source);
+		container.textContent = source;
+
+		const wrapper = pre.closest(".expressive-code") || pre;
+		wrapper.replaceWith(container);
+		nodesToRender.push(container);
+	});
+
+	existingNodes.forEach((node) => {
+		const source = node.getAttribute("data-mermaid-source");
+		if (!source) return;
+		node.removeAttribute("data-processed");
+		node.textContent = source;
+		nodesToRender.push(node as HTMLElement);
+	});
+
+	if (nodesToRender.length > 0) {
+		await mermaid.run({ nodes: nodesToRender });
+	}
+}
+
+renderMermaidDiagrams();
+
+const setupMermaid = () => {
+	window.swup.hooks.on("page:view", () => {
+		renderMermaidDiagrams();
+	});
+};
+
+if (window.swup) {
+	setupMermaid();
+} else {
+	document.addEventListener("swup:enable", setupMermaid);
+}
+
+const themeObserver = new MutationObserver((mutations) => {
+	for (const mutation of mutations) {
+		if (mutation.attributeName === "class") {
+			renderMermaidDiagrams();
+			break;
+		}
+	}
+});
+themeObserver.observe(document.documentElement, { attributes: true });
+</script>
