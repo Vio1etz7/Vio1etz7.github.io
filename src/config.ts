@@ -13,8 +13,9 @@ export const siteConfig: SiteConfig = {
 	subtitle: "一个软工学生的博客",
 	lang: "zh_CN", // Language code, e.g. 'en', 'zh_CN', 'ja', etc.
 	themeColor: {
-		// 固定主色（紫罗兰，呼应 ID 里的 violet），不再允许访客改色，保证品牌一致
-		hue: 275, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
+		// 固定主色：偏蓝的紫罗兰（OKLCH 色相 288，275=蓝紫，300=紫，320+ 就偏品红了）
+		// 不再允许访客改色，保证品牌一致
+		hue: 288, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
 		fixed: true, // Hide the theme color picker for visitors
 	},
 	banner: {

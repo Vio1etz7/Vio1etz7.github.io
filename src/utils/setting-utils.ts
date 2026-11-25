@@ -4,7 +4,7 @@ import {
 	DEFAULT_THEME,
 	LIGHT_MODE,
 } from "@constants/constants.ts";
-import { expressiveCodeConfig } from "@/config";
+import { expressiveCodeConfig, siteConfig } from "@/config";
 import type { LIGHT_DARK_MODE } from "@/types/config";
 
 export function getDefaultHue(): number {
@@ -14,12 +14,21 @@ export function getDefaultHue(): number {
 }
 
 export function getHue(): number {
+	// themeColor.fixed 为 true 时不接受访客自定义色相，只认 src/config.ts，
+	// 并清掉历史残留值，避免旧值继续盖住配置
+	if (siteConfig.themeColor.fixed) {
+		localStorage.removeItem("hue");
+		return getDefaultHue();
+	}
 	const stored = localStorage.getItem("hue");
 	return stored ? Number.parseInt(stored, 10) : getDefaultHue();
 }
 
 export function setHue(hue: number): void {
-	localStorage.setItem("hue", String(hue));
+	// 固定色相时不写入 localStorage，保持存储干净
+	if (!siteConfig.themeColor.fixed) {
+		localStorage.setItem("hue", String(hue));
+	}
 	const r = document.querySelector(":root") as HTMLElement;
 	if (!r) {
 		return;

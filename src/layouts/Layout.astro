@@ -131,7 +131,7 @@ const bannerOffset =
 		))}
 
 		<!-- Set the theme before the page is rendered to avoid a flash -->
-		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, PAGE_WIDTH, configHue}}>
+		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, PAGE_WIDTH, configHue, hueFixed: siteConfig.themeColor.fixed}}>
 			// Load the theme from local storage
 			const theme = localStorage.getItem('theme') || DEFAULT_THEME;
 			switch (theme) {
@@ -149,8 +149,10 @@ const bannerOffset =
 					}
 			}
 
-			// Load the hue from local storage
-			const hue = localStorage.getItem('hue') || configHue;
+			// 色相固定时只认配置：顺手清掉旧版「主题色选择器」留在 localStorage 的 hue，
+			// 否则那个历史值会一直盖住 src/config.ts 里的设置（改了配置却还是旧颜色）
+			if (hueFixed) localStorage.removeItem('hue');
+			const hue = hueFixed ? configHue : (localStorage.getItem('hue') || configHue);
 			document.documentElement.style.setProperty('--hue', hue);
 
 			// calculate the --banner-height-extend, which needs to be a multiple of 4 to avoid blurry text
