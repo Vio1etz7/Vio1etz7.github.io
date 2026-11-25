@@ -1,8 +1,9 @@
 ---
 title: Unity 2D RPG 架构演进与开发日志
+image: "cover.jpg"
 published: 2026-11-25
 updated: 2026-11-25
-description: "记录 Unity 2D RPG 项目从战斗状态、数值管道到技能系统的核心因果链与架构设计笔记。"
+description: "记录 Unity 2D RPG 项目的开发日志"
 tags: [Unity, C#, 2D RPG, 架构设计, 开发日志]
 category: 游戏开发
 draft: false
