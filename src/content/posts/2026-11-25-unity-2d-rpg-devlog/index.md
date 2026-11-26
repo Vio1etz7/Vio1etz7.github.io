@@ -2,7 +2,7 @@
 title: Unity 2D RPG 架构演进与开发日志
 image: "cover.jpg"
 published: 2026-11-25
-updated: 2026-11-25
+updated: 2026-11-26
 description: "记录 Unity 2D RPG 项目的开发日志"
 tags: [Unity, C#, 2D RPG, 架构设计, 开发日志]
 category: 游戏开发
@@ -10,6 +10,35 @@ draft: false
 ---
 
 > 本日志持续更新，记录 Unity 2D RPG 项目每节核心机制的**底层设计思想**与**全局因果时序图**（最新进度在最上方）。
+
+---
+
+## 2026-11-26 · 技能树工具提示（UI_ToolTip 继承与屏幕防溢出）
+
+> **核心思想**：用**基类封装定位与边界算法、子类填充业务文案**（模板方法/继承复用）；隐藏弹窗时用“移出屏幕外”替代 `SetActive(false)`，保留 LayoutGroup 的实时尺寸计算能力。
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Mouse as 玩家鼠标
+    participant Node as UI_TreeNode (触发源)
+    participant UI as UI (中枢中介)
+    participant SkillTip as 子类: UI_SkillToolTip
+    participant BaseTip as 基类: UI_ToolTip
+
+    Mouse->>Node: 1. 滑入节点 OnPointerEnter
+    Node->>UI: 2. 通过父级引用访问 ui.skillToolTip
+    UI-->>Node: 返回弹窗实例
+    Node->>SkillTip: 3. ShowToolTip(true, rect, skillData)
+    SkillTip->>BaseTip: 4. base.ShowToolTip(true, rect)
+    BaseTip->>BaseTip: 5. UpdatePosition: 根据屏幕中线左右翻转 + 上下边界钳制
+    SkillTip->>SkillTip: 6. 填充技能名、描述、点数需求 (TMP_Text)
+
+    Mouse->>Node: 7. 滑出节点 OnPointerExit
+    Node->>SkillTip: 8. ShowToolTip(false, rect)
+    SkillTip->>BaseTip: 9. base.ShowToolTip(false, rect)
+    BaseTip->>BaseTip: 10. 坐标流放至 (9999, 9999) 实现无损隐藏
+```
 
 ---
 
