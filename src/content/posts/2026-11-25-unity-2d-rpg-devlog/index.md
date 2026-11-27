@@ -2,7 +2,7 @@
 title: Unity 2D RPG 架构演进与开发日志
 image: "cover.jpg"
 published: 2026-11-25
-updated: 2026-11-26
+updated: 2026-11-27
 description: "记录 Unity 2D RPG 项目的开发日志"
 tags: [Unity, C#, 2D RPG, 架构设计, 开发日志]
 category: 游戏开发
@@ -10,6 +10,32 @@ draft: false
 ---
 
 > 本日志持续更新，记录 Unity 2D RPG 项目每节核心机制的**底层设计思想**与**全局因果时序图**（最新进度在最上方）。
+
+---
+
+## 2026-11-27 · 技能树连接（UI_TreeConnectHandler 与坐标空间转换）
+
+> **核心思想**：在编辑器态利用 `OnValidate()` 实现**声明式拓扑排版**（只配方向与长度，自动算坐标吸附子节点）；跨越不同 UI 层级定位时，用 `RectTransformUtility.ScreenPointToLocalPointInRectangle` 完成父级局部坐标系的精准映射。
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dev as 开发者 (Inspector 调参)
+    participant Handler as 父节点: UI_TreeConnectHandler
+    participant Conn as 线段: UI_TreeConnection
+    participant Util as Unity RectTransformUtility
+    participant Child as 子节点: UI_TreeConnectHandler
+
+    Dev->>Handler: 1. 修改 connectionDetails (方向/长度/子节点)
+    Note over Dev,Handler: 编辑器自动触发 OnValidate()
+    Handler->>Handler: 2. 校验配置数组与线段数组长度一致
+    Handler->>Handler: 3. UpdateConnections() 遍历每条连接
+    Handler->>Conn: 4. GetConnectionPoint(rect) 读取线段末端点
+    Conn->>Util: 5. ScreenPointToLocalPointInRectangle(rect.parent, 末端点.position)
+    Util-->>Handler: 返回父容器坐标系下的 localPoint
+    Handler->>Conn: 6. DirectionConnect(direction, length) 旋转角度 & 拉伸宽度
+    Handler->>Child: 7. setPosition(localPoint) 将子节点吸附到末端
+```
 
 ---
 
